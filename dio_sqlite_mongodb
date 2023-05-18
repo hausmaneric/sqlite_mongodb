@@ -1,0 +1,51 @@
+import sqlite3
+
+class Cliente:
+    def __init__(self, id, nome, email):
+        self.id = id
+        self.nome = nome
+        self.email = email
+
+    def salvar(self):
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO Cliente (id, nome, email) VALUES (?, ?, ?)', (self.id, self.nome, self.email))
+        conn.commit()
+        conn.close()
+
+    @staticmethod
+    def buscar_por_id(id):
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT id, nome, email FROM Cliente WHERE id = ?', (id,))
+        result = cursor.fetchone()
+        conn.close()
+        if result:
+            id, nome, email = result
+            return Cliente(id, nome, email)
+        return None
+
+class Conta:
+    def __init__(self, id, numero, saldo):
+        self.id = id
+        self.numero = numero
+        self.saldo = saldo
+
+    def salvar(self):
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO Conta (id, numero, saldo) VALUES (?, ?, ?)', (self.id, self.numero, self.saldo))
+        conn.commit()
+        conn.close()
+
+    @staticmethod
+    def buscar_por_id(id):
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT id, numero, saldo FROM Conta WHERE id = ?', (id,))
+        result = cursor.fetchone()
+        conn.close()
+        if result:
+            id, numero, saldo = result
+            return Conta(id, numero, saldo)
+        return None
